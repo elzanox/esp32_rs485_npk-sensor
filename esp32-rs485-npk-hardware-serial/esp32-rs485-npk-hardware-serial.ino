@@ -1,21 +1,19 @@
 #include <Arduino.h>
 #include <ModbusMaster.h>
-#include <SoftwareSerial.h>
+#include <HardwareSerial.h>
 
 // Tentukan pin untuk RX dan TX
-const int RX_PIN = 5; // Pin untuk menerima data
-const int TX_PIN = 18; // Pin untuk mengirim data
+const int RX_PIN = 4; // Pin untuk menerima data
+const int TX_PIN = 0; // Pin untuk mengirim data
 
-// Inisialisasi SoftwareSerial dan ModbusMaster
-SoftwareSerial rs485Serial(RX_PIN, TX_PIN);
+HardwareSerial rs485Serial(1);  // Gunakan UART1
+
 ModbusMaster node;
 
 void setup() {
   Serial.begin(9600);      // Memulai komunikasi serial dengan komputer
-  rs485Serial.begin(4800); // Memulai komunikasi dengan baudrate 4800
-
+  rs485Serial.begin(4800, SERIAL_8N1, RX_PIN, TX_PIN); // Baud rate sesuai sensor
   node.begin(1, rs485Serial); // Inisialisasi Modbus dengan alamat slave 1
-
   Serial.println("Modbus RS485 Reader is ready.");
 }
 
